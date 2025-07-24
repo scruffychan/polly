@@ -54,11 +54,11 @@ export default function Home() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <DailyQuestion question={activeQuestion} />
         
+        <PublicChat questionId={activeQuestion.id} />
+        
         {activeQuestion.researchPapers && activeQuestion.researchPapers.length > 0 && (
           <ResearchPapers papers={activeQuestion.researchPapers} />
         )}
-        
-        <PublicChat questionId={activeQuestion.id} />
         
         {activeQuestion.actionItems && activeQuestion.actionItems.length > 0 && (
           <GetInvolvedSection actionItems={activeQuestion.actionItems} />

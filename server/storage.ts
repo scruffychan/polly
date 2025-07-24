@@ -22,7 +22,7 @@ import {
   type InsertUserFeedback,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, desc, gte, lte, isNull } from "drizzle-orm";
+import { eq, and, desc, gte, lte, isNull, count } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
@@ -86,7 +86,10 @@ export class DatabaseStorage implements IStorage {
   async createQuestion(questionData: InsertQuestion): Promise<Question> {
     const [question] = await db
       .insert(questions)
-      .values(questionData)
+      .values({
+        ...questionData,
+        options: questionData.options as string[]
+      })
       .returning();
     return question;
   }
@@ -165,7 +168,7 @@ export class DatabaseStorage implements IStorage {
     const results = await db
       .select({
         option: votes.selectedOption,
-        count: db.$count(votes.selectedOption),
+        count: count(),
       })
       .from(votes)
       .where(eq(votes.questionId, questionId))

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import SentimentMeter from "./SentimentMeter";
+import SentimentMeter from "@/components/SentimentMeter";
 
 interface ChatMessage {
   id: number;
@@ -162,15 +162,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
           />
         </div>
 
-        {/* Discussion Prompts */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-          <h4 className="font-medium text-primary mb-2">Discussion Prompts</h4>
-          <div className="space-y-1 text-sm text-text">
-            <p>• What personal experiences have shaped your views on this?</p>
-            <p>• Which research finding above surprised you most?</p>
-            <p>• What common ground can we find across different perspectives?</p>
-          </div>
-        </div>
+
 
         {/* Chat Messages */}
         <div 
