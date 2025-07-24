@@ -1,0 +1,36 @@
+Build a web app called 'Polly' using Node.js, Express.js, and MongoDB for the backend, and React with Tailwind CSS for the frontend. The app’s purpose is to foster meaningful dialogue and positive change around controversial and topical issues by asking one multiple-choice question per day, hosting a public chat space for discussion, displaying credible non-partisan research papers, and revealing vote statistics after 24 hours. Below are the detailed requirements:
+
+Core Features:
+1. **Daily Question**: Display one multiple-choice question per day (3-5 options) on controversial, topical issues (e.g., climate change, healthcare, immigration) sourced from non-partisan organizations like Pew Research Center. Ensure questions are neutrally framed to avoid bias. Users can select one option and submit once per day, tracked via user authentication (Replit Auth or email/password). Prevent multiple submissions per user per day.
+2. **Non-Partisan Research Papers**: Below the question, display 3-5 credible, non-partisan research papers/reports (e.g., from Pew Research, RAND, or academic journals) relevant to the topic. Fetch metadata via an API (e.g., Google Scholar or CrossRef) or store curated links in MongoDB. Include a 50-100 word summary for each paper, highlighting key findings. Ensure sources are recent (within 5 years) and non-partisan.
+3. **Public Chat Space**: Below the question and research papers, include a real-time public chat section for discussing the topic. Use Socket.IO for real-time messaging. Provide guided discussion prompts (e.g., “What shapes your view on this?”) to encourage perspective-sharing. Highlight messages expressing commonality with a “Common Ground” badge. Moderate chat with basic filters for inappropriate content.
+4. **Statistics Display**: After 24 hours, expire the question and display vote results as percentages (e.g., Option A: 40%). Archive past questions and results in a “History” page. Include a “Get Involved” section with actionable steps (e.g., links to NGOs, petitions, or volunteer opportunities) tied to the issue.
+5. **User Authentication**: Use Replit Auth or a simple email/password system to track submissions and prevent multiple votes. Allow users to opt into anonymous profiles for chat.
+6. **Sentiment Analysis**: Integrate a lightweight NLP library (e.g., Sentiment.js) to analyze chat message tone. Display a real-time “Discussion Tone” meter (positive, neutral, negative) to encourage constructive dialogue.
+7. **Cross-Partisan Pairing (Optional)**: Offer an opt-in feature for 1:1 private, moderated chats between users with differing poll responses. Match users based on their answers and ensure anonymity if requested.
+8. **Gamification**: Award badges/points for constructive actions (e.g., citing a research paper, posting positive-tone messages, or joining cross-partisan chats) to encourage engagement.
+9. **User Feedback**: Include a form for users to suggest future topics, stored in MongoDB for admin review to ensure neutrality and relevance.
+10. **Admin Interface**: Create an admin panel (accessible only to admins) to input daily questions, options, and research papers, schedule questions in advance, and moderate chat content.
+
+Technical Requirements:
+- **Backend**: Use Node.js with Express.js and MongoDB. Design a schema for questions, user responses, chat messages, research papers, and user feedback. Secure sensitive data with Replit Secrets.
+- **Frontend**: Use React for a dynamic, mobile-responsive UI styled with Tailwind CSS. Ensure accessibility with ARIA labels and keyboard navigation.
+- **Real-Time Features**: Use Socket.IO for chat and cross-partisan pairing.
+- **Deployment**: Deploy on Replit’s hosting with a unique domain. Ensure secure data storage.
+- **Error Handling**: Handle errors for submissions, logins, and database issues with user-friendly messages.
+
+Design Preferences:
+- **Colors**: Primary #4A90E2 (blue), Secondary #50E3C2 (mint), Accent #FF9500 (orange), Background #F5F5F5 (light grey), Text #333333 (dark grey).
+- **Typography**: SF Pro Text or Roboto, 16px body, 24px question text.
+- **Layout**: Card-based layout with 16px padding, 8px border radius. Center the question, followed by research papers (collapsible list), chat section (scrollable), and “Get Involved” section. Display the “Discussion Tone” meter as a small, unobtrusive widget.
+- **Accessibility**: Ensure ARIA labels and keyboard navigation.
+
+Prompting Instructions:
+- Generate the project structure, including files (e.g., server.js, App.js, MongoDB schema).
+- Provide a plan outlining tools, folder structure, and database schema before coding.
+- Develop in steps: (1) Backend with Express and MongoDB, (2) Authentication, (3) Question and voting system, (4) Research papers integration, (5) Chat with Socket.IO and sentiment analysis, (6) Cross-partisan pairing, (7) Frontend with React and Tailwind, (8) Admin panel, (9) Gamification and feedback, (10) Deployment.
+- Test each feature in Replit’s preview window with checkpoints for rollback.
+- Do not modify existing features unless instructed in future prompts.
+- If errors occur, explain and suggest fixes in plain English.
+
+Start by setting up the backend server and MongoDB schema, then proceed to authentication, question system, and additional features. Deploy the app and provide the live URL upon completion.

@@ -1,0 +1,31 @@
+Build a web app called 'Polly' using Node.js, Express.js, and MongoDB for the backend, and React with Tailwind CSS for the frontend. The app should ask one multiple-choice question per day to all users worldwide, allow users to submit one answer per day, display a public chat space below the question for users to discuss the theme, and reveal aggregated statistics (percentage of votes per option) after 24 hours. Below are the detailed requirements:
+
+Core Features:
+1. **Daily Question**: Display one multiple-choice question per day with 3-5 answer options. Only one question is active at a time. Users can select one option and submit their answer once per day. Prevent multiple submissions per user per day using user authentication (e.g., Replit Auth or a simple email/password system).
+2. **Public Chat Space**: Below the question, include a real-time public chat section where users can discuss the question's theme. Use WebSocket (e.g., Socket.IO) for real-time messaging. Ensure the chat is moderated with basic filters for inappropriate content.
+3. **Statistics Display**: After 24 hours, the question expires, and the app displays the results as a percentage of votes for each option (e.g., Option A: 40%, Option B: 30%, etc.). Archive previous questions and their results in a separate "History" page.
+4. **User Authentication**: Implement a simple login system (preferably Replit Auth) to track user submissions and prevent multiple votes. Users should register with an email and password or use a third-party login if Replit Auth supports it.
+5. **Admin Interface**: Create a basic admin panel (accessible only to admin users) to input a new question and its options daily. The admin can schedule questions in advance with a start date and time.
+
+Technical Requirements:
+- **Backend**: Use Node.js with Express.js for the server. Store questions, user responses, and chat messages in a MongoDB database. Ensure the database schema supports daily questions, user votes, and chat history.
+- **Frontend**: Use React for a dynamic, responsive UI. Style the app with Tailwind CSS for a modern, clean look. Ensure the app is mobile-responsive.
+- **Real-Time Features**: Implement WebSocket using Socket.IO for the chat functionality to ensure real-time updates without page refresh.
+- **Deployment**: Use Replit’s built-in hosting to deploy the app with a unique domain. Ensure the app is secure with encrypted storage for sensitive data (e.g., user credentials) using Replit’s Secrets tool.
+- **Error Handling**: Include basic error handling for failed submissions, invalid logins, or database issues. Display user-friendly error messages.
+
+Design Preferences:
+- **Colors**: Use a calming palette: Primary #4A90E2 (blue), Secondary #50E3C2 (mint), Accent #FF9500 (orange), Background #F5F5F5 (light grey), Text #333333 (dark grey).
+- **Typography**: Use SF Pro Text or Roboto fonts, 16px for body text, 24px for question text.
+- **Layout**: Minimalist design with a card-based layout for the question and chat. Use 16px padding and 8px border radius for cards. Center the question at the top, with answer options as clickable buttons. Place the chat section below with a scrollable message area and an input field for new messages.
+- **Accessibility**: Ensure the app is accessible with proper ARIA labels and keyboard navigation.
+
+Prompting Instructions:
+- Generate the complete project structure, including all necessary files (e.g., server.js, App.js, MongoDB schema).
+- Provide a clear plan before coding, outlining the tools, folder structure, and database schema.
+- Break the development into steps: (1) Set up backend with Express and MongoDB, (2) Implement authentication, (3) Create the question and voting system, (4) Add the chat feature with Socket.IO, (5) Build the frontend with React and Tailwind CSS, (6) Set up the admin panel, (7) Configure deployment.
+- After each step, test the feature in Replit’s preview window and provide a checkpoint for rollback if needed.
+- Do not modify existing features unless explicitly instructed in future prompts. For example, if asked to update the chat, do not change the voting system.
+- If an error occurs, explain the issue and suggest a fix in plain English.
+
+Start by creating the backend server and database schema, then proceed to the frontend and real-time features. Deploy the app on Replit’s hosting and provide the live URL upon completion.
