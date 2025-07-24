@@ -19,9 +19,33 @@ interface ResearchPapersProps {
 
 export default function ResearchPapers({ papers }: ResearchPapersProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  console.log("Research papers data:", papers);
 
   if (!papers || papers.length === 0) {
-    return null;
+    return (
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-text flex items-center">
+              <i className="fas fa-book-open text-primary mr-2"></i>
+              Research & Evidence
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-primary hover:text-blue-600"
+            >
+              <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'}`}></i>
+            </Button>
+          </div>
+          {isExpanded && (
+            <p className="text-gray-500 text-sm">No research papers available for this question.</p>
+          )}
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

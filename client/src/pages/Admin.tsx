@@ -39,11 +39,11 @@ export default function Admin() {
     icon: "fas fa-link"
   });
 
-  const { data: questions, isLoading: questionsLoading } = useQuery({
+  const { data: questions, isLoading: questionsLoading } = useQuery<any[]>({
     queryKey: ["/api/questions/history"],
   });
 
-  const { data: feedback, isLoading: feedbackLoading } = useQuery({
+  const { data: feedback, isLoading: feedbackLoading } = useQuery<any[]>({
     queryKey: ["/api/feedback"],
   });
 

@@ -5,8 +5,19 @@ import ResearchPapers from "@/components/ResearchPapers";
 import PublicChat from "@/components/PublicChat";
 import GetInvolvedSection from "@/components/GetInvolvedSection";
 
+interface ActiveQuestionData {
+  id: number;
+  text: string;
+  options: string[];
+  endDate: string;
+  totalVotes: number;
+  voteStats?: { option: string; count: number }[];
+  researchPapers?: any[];
+  actionItems?: any[];
+}
+
 export default function Home() {
-  const { data: activeQuestion, isLoading } = useQuery({
+  const { data: activeQuestion, isLoading } = useQuery<ActiveQuestionData>({
     queryKey: ["/api/questions/active"],
     refetchInterval: 30000, // Refresh every 30 seconds
   });
@@ -56,9 +67,7 @@ export default function Home() {
         
         <PublicChat questionId={activeQuestion.id} />
         
-        {activeQuestion.researchPapers && activeQuestion.researchPapers.length > 0 && (
-          <ResearchPapers papers={activeQuestion.researchPapers} />
-        )}
+        <ResearchPapers papers={activeQuestion.researchPapers || []} />
         
         {activeQuestion.actionItems && activeQuestion.actionItems.length > 0 && (
           <GetInvolvedSection actionItems={activeQuestion.actionItems} />

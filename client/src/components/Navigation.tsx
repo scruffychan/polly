@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export default function Navigation() {
   const { user } = useAuth();
   const [location] = useLocation();
+  
+  // Type assertion for user object
+  const typedUser = user as any;
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
@@ -38,7 +41,7 @@ export default function Navigation() {
             >
               History
             </Link>
-            {user?.isAdmin && (
+            {typedUser?.isAdmin && (
               <Link 
                 href="/admin" 
                 className={`transition-colors ${
@@ -53,26 +56,26 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-3">
-            {user && (
+            {typedUser && (
               <div className="flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-lg">
                 <div 
                   className="w-6 h-6 bg-secondary rounded-full bg-cover bg-center"
                   style={{ 
-                    backgroundImage: user.profileImageUrl 
-                      ? `url(${user.profileImageUrl})` 
+                    backgroundImage: typedUser.profileImageUrl 
+                      ? `url(${typedUser.profileImageUrl})` 
                       : undefined 
                   }}
                 >
-                  {!user.profileImageUrl && (
+                  {!typedUser.profileImageUrl && (
                     <div className="w-full h-full bg-secondary rounded-full flex items-center justify-center">
                       <span className="text-xs font-medium text-white">
-                        {user.firstName?.[0] || user.email?.[0]?.toUpperCase() || '?'}
+                        {typedUser.firstName?.[0] || typedUser.email?.[0]?.toUpperCase() || '?'}
                       </span>
                     </div>
                   )}
                 </div>
                 <span className="text-sm font-medium">
-                  {user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user.email}
+                  {typedUser.firstName ? `${typedUser.firstName} ${typedUser.lastName || ''}`.trim() : typedUser.email}
                 </span>
                 <Button
                   variant="ghost"

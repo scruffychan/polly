@@ -2,8 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent } from "@/components/ui/card";
 
+interface HistoryQuestion {
+  id: number;
+  text: string;
+  options: string[];
+  endDate: string;
+  voteStats?: { option: string; count: number }[];
+  totalVotes: number;
+}
+
 export default function History() {
-  const { data: questions, isLoading } = useQuery({
+  const { data: questions, isLoading } = useQuery<HistoryQuestion[]>({
     queryKey: ["/api/questions/history"],
   });
 
