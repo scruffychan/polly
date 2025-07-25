@@ -83,68 +83,65 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
   const showResults = hasVoted || isExpired;
 
   return (
-    <Card className="mb-6">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
-              Today's Question
-            </span>
-            <span className="text-sm text-gray-500">
-              {new Date(question.endDate).toLocaleDateString()}
-            </span>
+    <div className="glass-card rounded-2xl p-8 mb-8">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="gradient-button px-4 py-2 rounded-full text-white text-sm font-medium">
+            Today's Question
           </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <i className="fas fa-clock"></i>
-            <span>{getTimeLeft()}</span>
-          </div>
+          <span className="text-sm text-gray-600">
+            {new Date(question.endDate).toLocaleDateString()}
+          </span>
         </div>
+        <div className="flex items-center space-x-2 text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-full">
+          <i className="fas fa-clock text-purple-600"></i>
+          <span className="font-medium">{getTimeLeft()}</span>
+        </div>
+      </div>
 
-        <h2 className="text-2xl font-medium text-text mb-6 leading-relaxed">
-          {question.text}
-        </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8 leading-relaxed">
+        {question.text}
+      </h2>
 
         {!showResults ? (
           <>
             {/* Voting Interface */}
-            <div className="space-y-3 mb-6">
+            <div className="space-y-4 mb-8">
               {question.options.map((option, index) => (
                 <label 
                   key={index}
-                  className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all group ${
-                    selectedOption === option
-                      ? "border-primary bg-blue-50"
-                      : "border-gray-200 hover:border-primary hover:bg-blue-50"
+                  className={`voting-option flex items-center p-6 rounded-xl cursor-pointer ${
+                    selectedOption === option ? "selected" : ""
                   }`}
                   onClick={() => setSelectedOption(option)}
                 >
-                  <div className={`w-5 h-5 border-2 rounded-full mr-4 flex items-center justify-center ${
+                  <div className={`w-6 h-6 border-2 rounded-full mr-4 flex items-center justify-center transition-all ${
                     selectedOption === option
-                      ? "border-primary"
-                      : "border-gray-300 group-hover:border-primary"
+                      ? "border-purple-600 bg-purple-600"
+                      : "border-gray-300"
                   }`}>
                     {selectedOption === option && (
-                      <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                      <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
-                  <span className="font-medium">{option}</span>
+                  <span className="font-medium text-gray-900 text-lg">{option}</span>
                 </label>
               ))}
             </div>
 
-            <Button
+            <button
               onClick={handleSubmitVote}
               disabled={!selectedOption || voteMutation.isPending || hasVoted}
-              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
+              className="w-full gradient-button text-white py-4 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {voteMutation.isPending ? "Submitting..." : "Submit Your Vote"}
-            </Button>
+            </button>
           </>
         ) : (
           <>
             {/* Results Display */}
-            <div className="space-y-4 mb-6">
-              <h3 className="font-semibold text-lg">Results:</h3>
+            <div className="space-y-6 mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Results:</h3>
               {question.options.map((option, index) => {
                 const stat = question.voteStats?.find(s => s.option === option);
                 const count = stat?.count || 0;
@@ -155,17 +152,17 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
                 const isUserChoice = voteCheck?.vote?.selectedOption === option;
                 
                 return (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className={`font-medium ${isUserChoice ? 'text-primary' : 'text-text'}`}>
-                        {option} {isUserChoice && '(Your choice)'}
+                  <div key={index} className="glass-card p-6 rounded-xl">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className={`font-semibold text-lg ${isUserChoice ? 'text-purple-600' : 'text-gray-900'}`}>
+                        {option} {isUserChoice && '✓ (Your choice)'}
                       </span>
-                      <span className="text-sm text-gray-600">{percentage}%</span>
+                      <span className="text-lg font-bold text-purple-600">{percentage}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div className="w-full bg-gray-200 rounded-full h-4">
                       <div 
-                        className={`h-3 rounded-full transition-all duration-500 ${
-                          isUserChoice ? 'bg-primary' : 'bg-gray-400'
+                        className={`h-4 rounded-full transition-all duration-1000 ${
+                          isUserChoice ? 'purple-gradient' : 'bg-gray-400'
                         }`}
                         style={{ width: `${percentage}%` }}
                       ></div>
@@ -177,12 +174,11 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
           </>
         )}
 
-        <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-gray-500">
-          <span>{question.totalVotes} votes so far</span>
+        <div className="mt-6 flex items-center justify-center space-x-4 text-sm text-gray-600 bg-white/60 py-3 px-6 rounded-full">
+          <span className="font-medium">{question.totalVotes} votes so far</span>
           <span>•</span>
           <span>One vote per person</span>
         </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

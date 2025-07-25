@@ -217,40 +217,39 @@ export default function GetInvolvedSection({ actionItems }: GetInvolvedSectionPr
   }
 
   return (
-    <Card>
-      <CardContent className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <i className="fas fa-hands-helping text-orange-600 mr-2"></i>
-          Take Action ({userCountry})
-        </h3>
+    <div className="glass-card rounded-2xl p-8">
+      <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+        <i className="fas fa-hands-helping text-orange-600 mr-3"></i>
+        Take Action ({userCountry})
+      </h3>
         
-        <div className="grid md:grid-cols-2 gap-4">
-          {localizedActions.map((item) => (
-            <div 
-              key={item.id}
-              className="border border-gray-200 rounded-lg p-4 hover:border-accent hover:shadow-md transition-all"
-            >
-              <div className="flex items-start space-x-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <i className={`${item.icon} text-orange-600`}></i>
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-1">{item.title}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{item.description}</p>
-                  <a 
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-orange-600 hover:underline text-sm font-medium"
-                  >
-                    Learn More →
-                  </a>
-                </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        {localizedActions.map((item) => (
+          <div 
+            key={item.id}
+            className="glass-card rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+          >
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <i className={`${item.icon} text-white text-lg`}></i>
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-gray-900 mb-2 text-lg">{item.title}</h4>
+                <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
+                <a 
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-orange-600 hover:text-orange-800 font-semibold hover:underline transition-colors group"
+                >
+                  Learn More 
+                  <i className="fas fa-external-link-alt ml-2 text-sm group-hover:translate-x-1 transition-transform"></i>
+                </a>
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
