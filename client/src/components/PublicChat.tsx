@@ -34,7 +34,6 @@ export default function PublicChat({ questionId }: PublicChatProps) {
   const [newMessage, setNewMessage] = useState("");
   const [sentiment, setSentiment] = useState({ avgSentiment: 0, positivePercentage: 50 });
   const [activeUsers, setActiveUsers] = useState(0);
-  const [lastMessageCount, setLastMessageCount] = useState(0);
   const wsRef = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -99,22 +98,15 @@ export default function PublicChat({ questionId }: PublicChatProps) {
     };
   }, [user, questionId]);
 
-  // Auto-scroll to bottom when new messages arrive (but not when user sends messages)
+  // Always auto-scroll to bottom when new messages appear (from anyone)
   useEffect(() => {
-    if (messages.length > lastMessageCount) {
-      // Only scroll if new messages were added by others, not by user sending
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      setLastMessageCount(messages.length);
-    }
-  }, [messages, lastMessageCount]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !wsRef.current || !user) return;
 
     if (wsRef.current.readyState === WebSocket.OPEN) {
-      // Temporarily prevent auto-scroll by updating the count before sending
-      setLastMessageCount(messages.length + 1);
-      
       wsRef.current.send(JSON.stringify({
         type: 'chat_message',
         content: newMessage.trim()
