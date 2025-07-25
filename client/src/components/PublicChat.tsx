@@ -217,7 +217,27 @@ export default function PublicChat({ questionId }: PublicChatProps) {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-text">{message.content}</p>
+                    <div className="flex items-start justify-between">
+                      <p className="text-sm text-text flex-1">{message.content}</p>
+                      {message.sentiment !== undefined && (
+                        <div className="ml-2 flex items-center">
+                          <div 
+                            className={`w-2 h-2 rounded-full ${
+                              message.sentiment > 0.3 ? 'bg-green-400' :
+                              message.sentiment > 0.1 ? 'bg-blue-400' :
+                              message.sentiment > -0.1 ? 'bg-gray-400' :
+                              message.sentiment > -0.3 ? 'bg-yellow-400' : 'bg-red-400'
+                            }`}
+                            title={`Sentiment: ${
+                              message.sentiment > 0.3 ? 'Constructive' :
+                              message.sentiment > 0.1 ? 'Positive' :
+                              message.sentiment > -0.1 ? 'Neutral' :
+                              message.sentiment > -0.3 ? 'Critical' : 'Negative'
+                            } (${message.sentiment.toFixed(2)})`}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
