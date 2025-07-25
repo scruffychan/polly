@@ -233,7 +233,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
               <Button 
                 onClick={handleSendMessage}
                 disabled={!newMessage.trim()}
-                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2 ml-[0px] mr-[0px]"
               >
                 <i className="fas fa-paper-plane"></i>
                 <span>Send</span>
