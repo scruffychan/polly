@@ -318,12 +318,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .map(msg => msg.sentiment as number);
           
           if (sentiments.length > 0) {
-            const avgSentiment = sentiments.reduce((sum, s) => sum + s, 0) / sentiments.length;
-            // More nuanced positive calculation: neutral and above (>= 0) counts as non-negative
-            const neutralAndPositiveCount = sentiments.filter(s => s >= 0).length;
-            const positiveCount = sentiments.filter(s => s > 0.15).length;
-            // Blend the two metrics for a more balanced representation
-            const positivePercentage = ((neutralAndPositiveCount * 0.4 + positiveCount * 0.6) / sentiments.length) * 100;
+            // Weight recent messages more heavily (last 20 messages get 2x weight)
+            const recentSentiments = sentiments.slice(-20);
+            const olderSentiments = sentiments.slice(0, -20);
+            
+            const recentWeight = recentSentiments.length * 2;
+            const olderWeight = olderSentiments.length;
+            const totalWeight = recentWeight + olderWeight;
+            
+            const recentAvg = recentSentiments.length > 0 ? 
+              recentSentiments.reduce((sum, s) => sum + s, 0) / recentSentiments.length : 0;
+            const olderAvg = olderSentiments.length > 0 ? 
+              olderSentiments.reduce((sum, s) => sum + s, 0) / olderSentiments.length : 0;
+            
+            const avgSentiment = totalWeight > 0 ? 
+              (recentAvg * recentWeight + olderAvg * olderWeight) / totalWeight : 0;
+            
+            // Calculate positive percentage with recent message weighting
+            const recentPositiveCount = recentSentiments.filter(s => s > 0.1).length;
+            const recentNeutralCount = recentSentiments.filter(s => s >= -0.1 && s <= 0.1).length;
+            const olderPositiveCount = olderSentiments.filter(s => s > 0.1).length;
+            const olderNeutralCount = olderSentiments.filter(s => s >= -0.1 && s <= 0.1).length;
+            
+            const totalPositiveWeighted = (recentPositiveCount * 2) + olderPositiveCount;
+            const totalNeutralWeighted = (recentNeutralCount * 2) + olderNeutralCount;
+            const positivePercentage = ((totalPositiveWeighted + totalNeutralWeighted * 0.5) / totalWeight) * 100;
             
             wss.clients.forEach((client: WebSocketClient) => {
               if (client.readyState === WebSocket.OPEN && client.questionId === ws.questionId) {
