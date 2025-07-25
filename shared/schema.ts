@@ -94,7 +94,6 @@ export const actionItems = pgTable("action_items", {
   description: text("description").notNull(),
   url: text("url").notNull(),
   icon: text("icon").notNull(),
-  country: text("country").default("US"), // Default to US for existing data
   createdAt: timestamp("created_at").defaultNow(),
 });
 

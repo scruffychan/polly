@@ -22,7 +22,7 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
   const { toast } = useToast();
   const [selectedOption, setSelectedOption] = useState<string>("");
 
-  const { data: voteCheck } = useQuery<{hasVoted: boolean; vote?: {selectedOption: string}}>({
+  const { data: voteCheck } = useQuery({
     queryKey: ["/api/votes/check", question.id],
     enabled: !!user,
   });
@@ -80,7 +80,7 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
     return `${hours}h ${minutes}m left`;
   };
 
-  const showResults = isExpired;
+  const showResults = hasVoted || isExpired;
 
   return (
     <Card className="mb-6">
@@ -107,55 +107,38 @@ export default function DailyQuestion({ question }: DailyQuestionProps) {
         {!showResults ? (
           <>
             {/* Voting Interface */}
-            {hasVoted ? (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-                <div className="flex items-center justify-center mb-3">
-                  <i className="fas fa-check-circle text-green-500 text-2xl mr-2"></i>
-                  <h3 className="text-lg font-semibold text-green-800">Vote Submitted!</h3>
-                </div>
-                <p className="text-green-700 mb-2">
-                  Thank you for participating in today's discussion.
-                </p>
-                <p className="text-sm text-green-600">
-                  Results will be revealed when the voting period ends.
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="space-y-3 mb-6">
-                  {question.options.map((option, index) => (
-                    <label 
-                      key={index}
-                      className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all group ${
-                        selectedOption === option
-                          ? "border-primary bg-blue-50"
-                          : "border-gray-200 hover:border-primary hover:bg-blue-50"
-                      }`}
-                      onClick={() => setSelectedOption(option)}
-                    >
-                      <div className={`w-5 h-5 border-2 rounded-full mr-4 flex items-center justify-center ${
-                        selectedOption === option
-                          ? "border-primary"
-                          : "border-gray-300 group-hover:border-primary"
-                      }`}>
-                        {selectedOption === option && (
-                          <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="font-medium">{option}</span>
-                    </label>
-                  ))}
-                </div>
-
-                <Button
-                  onClick={handleSubmitVote}
-                  disabled={!selectedOption || voteMutation.isPending}
-                  className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
+            <div className="space-y-3 mb-6">
+              {question.options.map((option, index) => (
+                <label 
+                  key={index}
+                  className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all group ${
+                    selectedOption === option
+                      ? "border-primary bg-blue-50"
+                      : "border-gray-200 hover:border-primary hover:bg-blue-50"
+                  }`}
+                  onClick={() => setSelectedOption(option)}
                 >
-                  {voteMutation.isPending ? "Submitting..." : "Submit Your Vote"}
-                </Button>
-              </>
-            )}
+                  <div className={`w-5 h-5 border-2 rounded-full mr-4 flex items-center justify-center ${
+                    selectedOption === option
+                      ? "border-primary"
+                      : "border-gray-300 group-hover:border-primary"
+                  }`}>
+                    {selectedOption === option && (
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                    )}
+                  </div>
+                  <span className="font-medium">{option}</span>
+                </label>
+              ))}
+            </div>
+
+            <Button
+              onClick={handleSubmitVote}
+              disabled={!selectedOption || voteMutation.isPending || hasVoted}
+              className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
+            >
+              {voteMutation.isPending ? "Submitting..." : "Submit Your Vote"}
+            </Button>
           </>
         ) : (
           <>

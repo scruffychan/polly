@@ -239,29 +239,12 @@ export class DatabaseStorage implements IStorage {
     return item;
   }
 
-  async getActionItemsForQuestion(questionId: number, userCountry?: string): Promise<ActionItem[]> {
-    // Get action items for the user's country first, then fallback to US/global items
-    const countryCode = userCountry || "US";
-    
-    const items = await db
+  async getActionItemsForQuestion(questionId: number): Promise<ActionItem[]> {
+    return await db
       .select()
       .from(actionItems)
       .where(eq(actionItems.questionId, questionId))
       .orderBy(desc(actionItems.createdAt));
-    
-    // Filter by country first, then add global/US items as fallback
-    const countryItems = items.filter(item => item.country === countryCode);
-    const fallbackItems = items.filter(item => item.country === "US" || item.country === "global");
-    
-    // Return country-specific items first, then fallbacks (avoiding duplicates)
-    const result = [...countryItems];
-    fallbackItems.forEach(item => {
-      if (!result.some(existing => existing.title === item.title)) {
-        result.push(item);
-      }
-    });
-    
-    return result.slice(0, 6); // Limit to 6 items
   }
 
   // User feedback operations

@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import DailyQuestion from "@/components/DailyQuestion";
 import ResearchPapers from "@/components/ResearchPapers";
 import PublicChat from "@/components/PublicChat";
 import GetInvolvedSection from "@/components/GetInvolvedSection";
-import CountrySelector from "@/components/CountrySelector";
 
 interface ActiveQuestionData {
   id: number;
@@ -19,11 +17,8 @@ interface ActiveQuestionData {
 }
 
 export default function Home() {
-  const [selectedCountry, setSelectedCountry] = useState("US");
-  
   const { data: activeQuestion, isLoading } = useQuery<ActiveQuestionData>({
-    queryKey: ["/api/questions/active", selectedCountry],
-    queryFn: () => fetch(`/api/questions/active?country=${selectedCountry}`).then(res => res.json()),
+    queryKey: ["/api/questions/active"],
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 
@@ -73,8 +68,6 @@ export default function Home() {
         <PublicChat questionId={activeQuestion.id} />
         
         <ResearchPapers papers={activeQuestion.researchPapers || []} />
-        
-        <CountrySelector onCountryChange={setSelectedCountry} />
         
         {activeQuestion.actionItems && activeQuestion.actionItems.length > 0 && (
           <GetInvolvedSection actionItems={activeQuestion.actionItems} />
