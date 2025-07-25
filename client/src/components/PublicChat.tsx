@@ -36,6 +36,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
   const [activeUsers, setActiveUsers] = useState(0);
   const wsRef = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const { data: initialMessages } = useQuery({
     queryKey: ["/api/chat", questionId],
@@ -100,7 +101,9 @@ export default function PublicChat({ questionId }: PublicChatProps) {
 
   // Always auto-scroll to bottom when new messages appear (from anyone)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   const handleSendMessage = () => {
@@ -176,6 +179,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
 
         {/* Chat Messages */}
         <div 
+          ref={chatContainerRef}
           className="border border-gray-200 rounded-lg mb-4 p-4 space-y-4 overflow-y-auto"
           style={{ height: '300px' }}
         >
