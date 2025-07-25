@@ -98,9 +98,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
     };
   }, [user, questionId]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  // Auto-scroll removed per user request - no smooth scrolling after sending messages
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !wsRef.current || !user) return;
