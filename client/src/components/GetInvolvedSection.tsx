@@ -75,6 +75,66 @@ const getCountrySpecificActions = (country: string, baseActions: ActionItem[]): 
         url: "https://www.ofcom.org.uk/consultations-and-statements",
         icon: "fas fa-comment-dots"
       }
+    ],
+    AU: [
+      {
+        title: "Contact Your MP",
+        description: "Reach out to your Australian Member of Parliament about digital rights and content regulation.",
+        url: "https://www.aph.gov.au/Senators_and_Members",
+        icon: "fas fa-flag"
+      },
+      {
+        title: "Support Digital Rights Watch",
+        description: "Join Australia's leading digital rights advocacy organization fighting for online freedoms.",
+        url: "https://digitalrightswatch.org.au",
+        icon: "fas fa-users"
+      },
+      {
+        title: "ACMA Public Consultations",
+        description: "Participate in Australian Communications and Media Authority consultations on online safety.",
+        url: "https://www.acma.gov.au/consultations",
+        icon: "fas fa-comment-dots"
+      }
+    ],
+    DE: [
+      {
+        title: "Contact Your Representative",
+        description: "Reach out to your German Bundestag member about digital rights and content regulation.",
+        url: "https://www.bundestag.de/en/members",
+        icon: "fas fa-flag"
+      },
+      {
+        title: "Support Digital Rights Organizations",
+        description: "Join German organizations like Digitale Gesellschaft working on digital rights issues.",
+        url: "https://digitalegesellschaft.de",
+        icon: "fas fa-users"
+      },
+      {
+        title: "EU Digital Services Act",
+        description: "Learn about and engage with EU digital services and content moderation regulations.",
+        url: "https://digital-strategy.ec.europa.eu/en/policies/digital-services-act-package",
+        icon: "fas fa-comment-dots"
+      }
+    ],
+    FR: [
+      {
+        title: "Contact Your Deputy",
+        description: "Contact your French National Assembly deputy about digital rights and content regulation.",
+        url: "https://www2.assemblee-nationale.fr/deputes/liste/alphabetique",
+        icon: "fas fa-flag"
+      },
+      {
+        title: "Support La Quadrature du Net",
+        description: "Join France's leading digital rights organization defending online freedoms.",
+        url: "https://www.laquadrature.net",
+        icon: "fas fa-users"
+      },
+      {
+        title: "CNIL and Digital Rights",
+        description: "Engage with French data protection and digital rights regulatory processes.",
+        url: "https://www.cnil.fr",
+        icon: "fas fa-comment-dots"
+      }
     ]
   };
 
@@ -104,18 +164,35 @@ export default function GetInvolvedSection({ actionItems }: GetInvolvedSectionPr
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         
         if (timezone.includes('America/New_York') || timezone.includes('America/Chicago') || 
-            timezone.includes('America/Denver') || timezone.includes('America/Los_Angeles')) {
+            timezone.includes('America/Denver') || timezone.includes('America/Los_Angeles') ||
+            timezone.includes('America/Phoenix') || timezone.includes('America/Anchorage')) {
           setUserCountry('US');
-        } else if (timezone.includes('America/Toronto') || timezone.includes('America/Vancouver')) {
+        } else if (timezone.includes('America/Toronto') || timezone.includes('America/Vancouver') ||
+                   timezone.includes('America/Montreal') || timezone.includes('America/Halifax')) {
           setUserCountry('CA');
         } else if (timezone.includes('Europe/London')) {
           setUserCountry('GB');
+        } else if (timezone.includes('Australia/Sydney') || timezone.includes('Australia/Melbourne') ||
+                   timezone.includes('Australia/Brisbane') || timezone.includes('Australia/Perth') ||
+                   timezone.includes('Australia/Adelaide') || timezone.includes('Australia/Darwin')) {
+          setUserCountry('AU');
+        } else if (timezone.includes('Europe/Berlin') || timezone.includes('Europe/Munich')) {
+          setUserCountry('DE');
+        } else if (timezone.includes('Europe/Paris')) {
+          setUserCountry('FR');
         } else {
-          // Fallback to IP-based detection
+          // Fallback to IP-based detection for better accuracy
           try {
             const response = await fetch('https://ipapi.co/json/');
             const data = await response.json();
-            setUserCountry(data.country_code || 'US');
+            const countryCode = data.country_code;
+            
+            // Only use detected country if we have specific resources for it
+            if (countryCode && ['US', 'CA', 'GB', 'AU', 'DE', 'FR'].includes(countryCode)) {
+              setUserCountry(countryCode);
+            } else {
+              setUserCountry('US'); // Default fallback for unsupported countries
+            }
           } catch {
             setUserCountry('US'); // Default fallback
           }
