@@ -18,17 +18,15 @@ interface ResearchPapersProps {
 }
 
 export default function ResearchPapers({ papers }: ResearchPapersProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  
-  console.log("Research papers data:", papers);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   if (!papers || papers.length === 0) {
     return (
       <Card className="mb-6">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-text flex items-center">
-              <i className="fas fa-book-open text-primary mr-2"></i>
+            <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+              <i className="fas fa-book-open text-blue-600 mr-2"></i>
               Research & Evidence
             </h3>
             <Button
@@ -52,8 +50,8 @@ export default function ResearchPapers({ papers }: ResearchPapersProps) {
     <Card className="mb-6">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-text flex items-center">
-            <i className="fas fa-book-open text-primary mr-2"></i>
+          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+            <i className="fas fa-book-open text-blue-600 mr-2"></i>
             Research & Evidence
           </h3>
           <Button
