@@ -52,6 +52,10 @@
   * {
     @apply border-border;
   }
+  
+  body {
+    font-family: 'Sora', sans-serif;
+  }
 
   body {
     @apply font-sans antialiased text-foreground;
