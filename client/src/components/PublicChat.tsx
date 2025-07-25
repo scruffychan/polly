@@ -44,7 +44,11 @@ export default function PublicChat({ questionId }: PublicChatProps) {
 
   useEffect(() => {
     if (initialMessages) {
-      setMessages(initialMessages);
+      // Sort initial messages by timestamp, oldest first
+      const sortedMessages = initialMessages.sort((a: ChatMessage, b: ChatMessage) => 
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      setMessages(sortedMessages);
     }
   }, [initialMessages]);
 
@@ -70,9 +74,13 @@ export default function PublicChat({ questionId }: PublicChatProps) {
       const data = JSON.parse(event.data);
       
       if (data.type === 'chat_history') {
-        setMessages(data.messages);
+        // Sort messages by timestamp, oldest first
+        const sortedMessages = data.messages.sort((a: ChatMessage, b: ChatMessage) => 
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        setMessages(sortedMessages);
       } else if (data.type === 'new_message') {
-        setMessages(prev => [data.message, ...prev]);
+        setMessages(prev => [...prev, data.message]);
       } else if (data.type === 'sentiment_update') {
         setSentiment({
           avgSentiment: data.avgSentiment,
