@@ -18,6 +18,36 @@ interface WebSocketClient extends WebSocket {
   questionId?: number;
 }
 
+// Function to detect user's country from request
+function getUserCountryFromRequest(req: any): string {
+  // Try to get country from various headers
+  const countryHeaders = [
+    req.headers['cf-ipcountry'], // Cloudflare
+    req.headers['x-country-code'], // Some CDNs
+    req.headers['country'], // Custom header
+  ];
+
+  for (const header of countryHeaders) {
+    if (header && typeof header === 'string') {
+      return header.toUpperCase();
+    }
+  }
+
+  // For development, we can check the user agent or use a default
+  // In production, you might want to use a GeoIP service
+  const userAgent = req.headers['user-agent'] || '';
+  
+  // For demo purposes, check query parameter to test different countries
+  // Example: ?country=AU for Australian resources
+  const queryCountry = req.query?.country;
+  if (queryCountry && typeof queryCountry === 'string') {
+    return queryCountry.toUpperCase();
+  }
+  
+  // Default to US
+  return 'US';
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
@@ -45,9 +75,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(null);
       }
 
+      // Detect user's country from request headers or IP
+      const userCountry = getUserCountryFromRequest(req);
+      
       const [papers, actionItems, voteStats] = await Promise.all([
         storage.getResearchPapersForQuestion(question.id),
-        storage.getActionItemsForQuestion(question.id),
+        storage.getActionItemsForQuestion(question.id, userCountry),
         storage.getVoteStatsForQuestion(question.id)
       ]);
 
