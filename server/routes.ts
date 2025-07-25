@@ -319,8 +319,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           if (sentiments.length > 0) {
             const avgSentiment = sentiments.reduce((sum, s) => sum + s, 0) / sentiments.length;
-            const positiveCount = sentiments.filter(s => s > 0.1).length;
-            const positivePercentage = (positiveCount / sentiments.length) * 100;
+            // More nuanced positive calculation: neutral and above (>= 0) counts as non-negative
+            const neutralAndPositiveCount = sentiments.filter(s => s >= 0).length;
+            const positiveCount = sentiments.filter(s => s > 0.15).length;
+            // Blend the two metrics for a more balanced representation
+            const positivePercentage = ((neutralAndPositiveCount * 0.4 + positiveCount * 0.6) / sentiments.length) * 100;
             
             wss.clients.forEach((client: WebSocketClient) => {
               if (client.readyState === WebSocket.OPEN && client.questionId === ws.questionId) {
