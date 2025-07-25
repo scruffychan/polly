@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { BookOpen, ChevronUp, ChevronDown } from "lucide-react";
 
 interface ResearchPaper {
   id: number;
@@ -25,20 +26,24 @@ export default function ResearchPapers({ papers }: ResearchPapersProps) {
       <div className="glass-card rounded-2xl p-8 mb-8">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-            <i className="fas fa-book-open text-purple-600 mr-3"></i>
+            <BookOpen className="text-purple-600 mr-3 w-6 h-6" />
             Research & Evidence
           </h3>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="bg-white/60 hover:bg-white/80 p-3 rounded-full transition-all hover:scale-105"
           >
-            <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-purple-600`}></i>
+            {isExpanded ? (
+              <ChevronUp className="text-purple-600 w-5 h-5" />
+            ) : (
+              <ChevronDown className="text-purple-600 w-5 h-5" />
+            )}
           </button>
         </div>
         {isExpanded && (
           <div className="text-center py-8">
             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i className="fas fa-book-open text-purple-600 text-xl"></i>
+              <BookOpen className="text-purple-600 w-8 h-8" />
             </div>
             <p className="text-gray-600">No research papers available for this question.</p>
           </div>
@@ -51,14 +56,18 @@ export default function ResearchPapers({ papers }: ResearchPapersProps) {
     <div className="glass-card rounded-2xl p-8 mb-8">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-          <i className="fas fa-book-open text-purple-600 mr-3"></i>
+          <BookOpen className="text-purple-600 mr-3 w-6 h-6" />
           Research & Evidence
         </h3>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="bg-white/60 hover:bg-white/80 p-3 rounded-full transition-all hover:scale-105"
         >
-          <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-purple-600`}></i>
+          {isExpanded ? (
+            <ChevronUp className="text-purple-600 w-5 h-5" />
+          ) : (
+            <ChevronDown className="text-purple-600 w-5 h-5" />
+          )}
         </button>
       </div>
 

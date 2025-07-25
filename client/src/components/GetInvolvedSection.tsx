@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
+import { HandHeart, Flag, Users, MessageCircle, Phone, Globe, FileText, ExternalLink } from "lucide-react";
 
 interface ActionItem {
   id: number;
@@ -8,6 +9,22 @@ interface ActionItem {
   url: string;
   icon: string;
 }
+
+// Map FontAwesome icon names to Lucide React components
+const getIconComponent = (iconName: string) => {
+  const iconMap: Record<string, any> = {
+    'fas fa-flag-usa': Flag,
+    'fas fa-flag': Flag,
+    'fas fa-users': Users,
+    'fas fa-comment-dots': MessageCircle,
+    'fas fa-phone': Phone,
+    'fas fa-globe': Globe,
+    'fas fa-file-text': FileText,
+    'fas fa-hands-helping': HandHeart,
+    'fas fa-external-link-alt': ExternalLink,
+  };
+  return iconMap[iconName] || Users; // Default to Users icon
+};
 
 interface GetInvolvedSectionProps {
   actionItems: ActionItem[];
@@ -219,7 +236,7 @@ export default function GetInvolvedSection({ actionItems }: GetInvolvedSectionPr
   return (
     <div className="glass-card rounded-2xl p-8">
       <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
-        <i className="fas fa-hands-helping text-orange-600 mr-3"></i>
+        <HandHeart className="text-orange-600 mr-3 w-6 h-6" />
         Take Action ({userCountry})
       </h3>
         
@@ -231,7 +248,10 @@ export default function GetInvolvedSection({ actionItems }: GetInvolvedSectionPr
           >
             <div className="flex items-start space-x-4">
               <div className="w-14 h-14 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                <i className={`${item.icon} text-white text-lg`}></i>
+                {(() => {
+                  const IconComponent = getIconComponent(item.icon);
+                  return <IconComponent className="text-white w-6 h-6" />;
+                })()}
               </div>
               <div className="flex-1">
                 <h4 className="font-bold text-gray-900 mb-2 text-lg">{item.title}</h4>
@@ -243,7 +263,7 @@ export default function GetInvolvedSection({ actionItems }: GetInvolvedSectionPr
                   className="inline-flex items-center text-orange-600 hover:text-orange-800 font-semibold hover:underline transition-colors group"
                 >
                   Learn More 
-                  <i className="fas fa-external-link-alt ml-2 text-sm group-hover:translate-x-1 transition-transform"></i>
+                  <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
             </div>
