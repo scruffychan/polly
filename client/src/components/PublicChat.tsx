@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { Send, MessageCircle } from "lucide-react";
 import SentimentMeter from "@/components/SentimentMeter";
 
 interface ChatMessage {
@@ -152,7 +153,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text flex items-center">
-            <i className="fas fa-comments text-primary mr-2"></i>
+            <MessageCircle className="text-primary mr-2 w-5 h-5" />
             Public Discussion
           </h3>
           
@@ -171,7 +172,7 @@ export default function PublicChat({ questionId }: PublicChatProps) {
         >
           {messages.length === 0 ? (
             <div className="text-center text-gray-500 py-8">
-              <i className="fas fa-comments text-4xl mb-4 opacity-50"></i>
+              <MessageCircle className="w-16 h-16 mb-4 opacity-50 mx-auto" />
               <p>No messages yet. Start the conversation!</p>
             </div>
           ) : (
@@ -233,9 +234,9 @@ export default function PublicChat({ questionId }: PublicChatProps) {
               <Button 
                 onClick={handleSendMessage}
                 disabled={!newMessage.trim()}
-                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2"
               >
-                <i className="fas fa-paper-plane"></i>
+                <Send className="w-4 h-4" />
                 <span>Send</span>
               </Button>
             </div>
