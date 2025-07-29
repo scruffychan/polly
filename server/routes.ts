@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { analyzeSentiment } from "./sentimentAnalysis";
+import { ensureActiveQuestion } from "./questionGenerator";
 import {
   insertQuestionSchema,
   insertVoteSchema,
@@ -39,6 +40,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Deactivate expired questions first
       await storage.deactivateExpiredQuestions();
+      
+      // Ensure there's always an active question
+      await ensureActiveQuestion();
       
       const question = await storage.getActiveQuestion();
       if (!question) {
